@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   categoriesOf,
+  detectApp,
   filterByCategory,
   formatPrice,
   isSoldOut,
@@ -54,5 +55,12 @@ describe('몰 화면 규칙', () => {
   it('주문번호 형식을 검사한다', () => {
     expect(ORDER_ID_PATTERN.test('ORD-20261105-0007')).toBe(true)
     expect(ORDER_ID_PATTERN.test('ORD-1')).toBe(false)
+  })
+
+  it('앱 안에서 열렸는지 사용자 에이전트로 안다', () => {
+    expect(detectApp('Mozilla/5.0 (Linux; Android 15) Chrome/140 Mobile Safari/537.36 DangjikApp/3.8.0 (Android)'))
+      .toEqual({ platform: 'ANDROID', version: '3.8.0' })
+    expect(detectApp('Mozilla/5.0 (iPhone) AppleWebKit/605 DangjikApp/3.8.0 (iOS)')).toEqual({ platform: 'IOS', version: '3.8.0' })
+    expect(detectApp('Mozilla/5.0 (Windows NT 10.0) Chrome/140')).toBeNull()
   })
 })

@@ -41,3 +41,4 @@ form.lookup { display: flex; gap: 8px; max-width: 480px; }
 input { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; }
 button { padding: 10px 18px; border: 0; border-radius: 8px; background: var(--brand); color: #fff; font-weight: 700; cursor: pointer; }
 .muted { color: #868e96; }
+.app-badge { margin-left: auto; background: #fff1e6; color: #e8590c; }

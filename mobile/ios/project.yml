@@ -1,0 +1,51 @@
+# XcodeGen 설정. Mac에서 `xcodegen generate` 를 실행하면 DangjikApp.xcodeproj 가 만들어진다
+name: DangjikApp
+options:
+  bundleIdPrefix: io.github.happyherait
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    MARKETING_VERSION: "3.8.0"
+    CURRENT_PROJECT_VERSION: "380"
+    SWIFT_VERSION: "5.0"
+targets:
+  DangjikApp:
+    type: application
+    platform: iOS
+    sources: [DangjikApp]
+    info:
+      path: DangjikApp/Info.plist
+      properties:
+        CFBundleDisplayName: 하루마켓
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        # 시뮬레이터에서 내 Mac의 로컬 개발 서버(http)만 허용
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        DangjikMallURL: http://localhost:3005
+        DangjikApiURL: http://localhost:18082
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.happyherait.dangjik.app
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGNING_ALLOWED: NO
+  DangjikAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [DangjikAppTests]
+    dependencies:
+      - target: DangjikApp
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
+schemes:
+  DangjikApp:
+    build:
+      targets:
+        DangjikApp: all
+        DangjikAppTests: [test]
+    test:
+      targets: [DangjikAppTests]

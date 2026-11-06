@@ -6,6 +6,12 @@ const id = String(route.params.id)
 const { data: order, error } = await useFetch<Order>(`/api/orders/${encodeURIComponent(id)}`)
 
 useHead({ title: `주문 ${id} · 하루마켓` })
+
+const { app, share } = useAppBridge()
+function shareOrder() {
+  if (!order.value) return
+  share(`하루마켓 주문 ${order.value.orderId}: ${orderStatusLabel(order.value.status)}`)
+}
 </script>
 
 <template>
@@ -35,6 +41,7 @@ useHead({ title: `주문 ${id} · 하루마켓` })
         </tbody>
       </table>
       <p style="text-align: right"><strong>합계 {{ formatPrice(order.totalAmount) }}</strong></p>
+      <p v-if="app" style="text-align: right"><button type="button" @click="shareOrder">주문 공유</button></p>
     </div>
   </template>
   <div v-else-if="error">

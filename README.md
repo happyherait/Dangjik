@@ -26,6 +26,7 @@ AI는 장애 원인을 진단하고 조치안을 제안하며, 조치 실행은 
 | 몰 | localhost:3005 | 상품, 주문 조회 |
 | 파트너 포털 | localhost:5175 | 대시보드, 재고, 주문/출고, 클레임, 정산 |
 | CRM | localhost:5175 | 회원 360, 상담 이력, 쿠폰, 세그먼트 |
+| 모바일 앱 | Android 에뮬레이터, iOS 시뮬레이터 | 몰을 WebView로 띄우는 셸, 공유, 강제 업데이트 |
 | 운영 콘솔 | localhost:5175 | AI 당직, SR 티켓, 장애 타임라인, 런북 승인, 배치, 배포, 앱 버전, 감사 로그 |
 
 ## AI가 할 수 있는 일과 없는 일
@@ -44,6 +45,9 @@ backend/
 frontend/
   mall/      Nuxt: 고객용 몰 (홈, 상품, 주문 조회)
   admin/     Vue: 파트너 포털, CRM, 운영 콘솔
+mobile/
+  android/   Kotlin WebView 셸 (AGP 9.4, Gradle 9.6)
+  ios/       Swift WKWebView 셸 (XcodeGen)
 docs/        기여 방법, 설계 기록
 ```
 
