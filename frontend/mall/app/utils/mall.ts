@@ -83,3 +83,10 @@ export function categoryIcon(category: string): string {
 }
 
 export const ORDER_ID_PATTERN = /^ORD-\d{8}-\d{4}$/
+
+/** 하루마켓 앱 안에서 열렸는지. 앱은 사용자 에이전트 끝에 DangjikApp/버전 (플랫폼)을 붙인다 */
+export function detectApp(userAgent: string): { platform: 'ANDROID' | 'IOS'; version: string } | null {
+  const m = /DangjikApp\/(\d+\.\d+\.\d+) \((Android|iOS)\)/.exec(userAgent)
+  if (!m || !m[1]) return null
+  return { platform: m[2] === 'iOS' ? 'IOS' : 'ANDROID', version: m[1] }
+}

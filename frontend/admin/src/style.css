@@ -83,3 +83,4 @@ button:disabled { opacity: .5; cursor: default; }
 .timeline .when { display: inline-block; width: 140px; color: #6b7280; font-size: 13px; }
 .timeline .tag { margin-right: 6px; }
 td.wrap { white-space: normal; }
+input.ver { width: 90px; padding: 6px 8px; border: 1px solid #d0d5dd; border-radius: 6px; font: inherit; }

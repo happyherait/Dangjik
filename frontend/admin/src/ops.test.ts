@@ -85,3 +85,27 @@ describe('런북 승인', () => {
     expect(wrapper.text()).toContain('제안 이후 주문이나 PG 데이터가 바뀌었습니다')
   })
 })
+
+describe('앱 버전 관리', () => {
+  it('지금 고른 직원으로 저장하고, 거절되면 이유를 보여준다', async () => {
+    const api = fakeApi({
+      '/api/ops/app-versions': {
+        body: [{ platform: 'ANDROID', latestVersion: '3.8.0', minSupportedVersion: '3.5.0', updatedAt: '2026-10-28T10:00:00' }],
+      },
+      'PUT /api/ops/app-versions/ANDROID': { status: 409, body: { message: '운영 팀장(OPS_LEAD)만 앱 버전 기준을 바꿀 수 있습니다.' } },
+    })
+    const wrapper = await open('/ops/app-versions')
+
+    await wrapper.find('input[aria-label="ANDROID 최소 지원 버전"]').setValue('3.8.0')
+    await wrapper.find('tbody button').trigger('click')
+    await flushPromises()
+
+    const call = api.fetchMock.mock.calls.find((c) => (c[1] as RequestInit | undefined)?.method === 'PUT')
+    expect(JSON.parse(String((call?.[1] as RequestInit).body))).toEqual({
+      latestVersion: '3.8.0',
+      minSupportedVersion: '3.8.0',
+      userId: 'ops.kim',
+    })
+    expect(wrapper.find('[role="status"]').text()).toContain('운영 팀장')
+  })
+})
