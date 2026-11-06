@@ -34,6 +34,9 @@ public class DutyTools {
             tool("get_order", "주문 상태, 금액, 상품, 우리 쪽 결제 기록을 조회합니다.", ORDER_ID),
             tool("get_pg_transactions", "PG사 원장에 남은 이 주문의 거래를 조회합니다.", ORDER_ID),
             tool("get_webhook_logs", "PG사가 보낸 결제 알림(웹훅)의 수신 기록을 조회합니다.", ORDER_ID),
+            tool("get_order_history",
+                    "이 주문에 대해 누가 언제 무엇을 했는지 조회합니다. 런북 제안과 승인, 출고, 결제 보정 기록이 나옵니다.",
+                    ORDER_ID),
             tool("list_deployments", "최근 배포 이력을 조회합니다.", NO_INPUT),
             tool("list_batch_jobs", "배치 작업의 마지막 실행 결과를 조회합니다.", NO_INPUT),
             tool("find_stuck_payments", "PG는 승인했는데 우리 쪽은 결제대기로 남은 주문을 찾습니다.", NO_INPUT),
@@ -91,6 +94,22 @@ public class DutyTools {
                     String id = text(input, "orderId");
                     var list = facts.webhookLogs(id);
                     yield ok(list, id + " 웹훅 기록 " + list.size() + "건");
+                }
+                case "get_order_history" -> {
+                    String id = text(input, "orderId");
+                    List<Map<String, Object>> runs = runbooks.runsFor(id).stream().map(r -> {
+                        Map<String, Object> m = new LinkedHashMap<>();
+                        m.put("runId", r.runId());
+                        m.put("status", r.status());
+                        m.put("requestedBy", r.requestedBy());
+                        m.put("createdAt", r.createdAt());
+                        m.put("executedAt", r.executedAt());
+                        m.put("approvals", facts.approvals(r.runId()));
+                        return m;
+                    }).toList();
+                    var events = facts.auditFor(id);
+                    yield ok(Map.of("runbookRuns", runs, "auditEvents", events),
+                            id + " 처리 이력: 런북 " + runs.size() + "건, 기록 " + events.size() + "건");
                 }
                 case "list_deployments" -> ok(facts.deployments(), "배포 이력 " + facts.deployments().size() + "건");
                 case "list_batch_jobs" -> ok(facts.batchJobs(), "배치 " + facts.batchJobs().size() + "개");

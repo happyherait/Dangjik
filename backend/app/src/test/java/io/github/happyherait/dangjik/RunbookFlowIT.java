@@ -12,6 +12,9 @@ import io.github.happyherait.dangjik.ops.RunbookService;
 import io.github.happyherait.dangjik.ops.TicketRepository;
 import io.github.happyherait.dangjik.ops.TimelineService;
 import io.github.happyherait.dangjik.partner.ShipmentService;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +89,9 @@ class RunbookFlowIT {
 
         assertEquals("EXECUTED", done.status());
         assertNotNull(done.executedAt());
+        // DB 서버 시간대와 상관없이 업무 시간대(서울)로 기록된다
+        LocalDateTime seoulNow = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        assertTrue(Duration.between(done.executedAt(), seoulNow).abs().toMinutes() < 5, done.executedAt().toString());
         assertEquals("PAID", orderStatus(STUCK));
         assertEquals("PGTX-88007", jdbc.sql("SELECT pg_tx_id FROM payments WHERE order_id = :o")
                 .param("o", STUCK).query(String.class).single());

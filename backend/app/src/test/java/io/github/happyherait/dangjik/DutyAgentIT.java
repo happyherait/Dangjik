@@ -65,6 +65,12 @@ class DutyAgentIT {
         String runId = a.proposal().runId();
         runbooks.approve(runId, "lead.park", runbooks.run(runId).orElseThrow().planHash());
         assertEquals("PAID", orderStatus("ORD-20261105-0007"));
+
+        // 처리 뒤에는 누가 승인했는지 AI가 조회할 수 있다
+        DutyTools.Result history = tools.run("get_order_history", Map.of("orderId", "ORD-20261105-0007"), "ops.kim", null);
+        assertTrue(history.summary().contains("런북 1건"), history.summary());
+        String body = json.writeValueAsString(history.value());
+        assertTrue(body.contains("lead.park") && body.contains("APPROVE") && body.contains("ORDER_PAYMENT_RESYNCED"), body);
     }
 
     @Test
