@@ -1,0 +1,41 @@
+{
+  "description": "결제 상태 재동기화 런북의 골든 케이스. Java(backend/runbook)와 TypeScript(공개 데모)가 같은 결과를 내는지 확인한다.",
+  "orders": [
+    { "orderId": "ORD-20261105-0007", "status": "PAYMENT_PENDING", "amount": 39000 },
+    { "orderId": "ORD-20261105-0005", "status": "PAYMENT_PENDING", "amount": 59000 },
+    { "orderId": "ORD-20261105-0004", "status": "PAID", "amount": 12000 },
+    { "orderId": "ORD-X-AMOUNT", "status": "PAYMENT_PENDING", "amount": 50000 },
+    { "orderId": "ORD-X-DOUBLE", "status": "PAYMENT_PENDING", "amount": 8000 }
+  ],
+  "pgTransactions": [
+    { "pgTxId": "PGTX-88007", "orderId": "ORD-20261105-0007", "status": "APPROVED", "amount": 39000 },
+    { "pgTxId": "PGTX-88005", "orderId": "ORD-20261105-0005", "status": "FAILED", "amount": 59000 },
+    { "pgTxId": "PGTX-88004", "orderId": "ORD-20261105-0004", "status": "APPROVED", "amount": 12000 },
+    { "pgTxId": "PGTX-X1", "orderId": "ORD-X-AMOUNT", "status": "APPROVED", "amount": 5000 },
+    { "pgTxId": "PGTX-X2", "orderId": "ORD-X-DOUBLE", "status": "APPROVED", "amount": 8000 },
+    { "pgTxId": "PGTX-X3", "orderId": "ORD-X-DOUBLE", "status": "APPROVED", "amount": 8000 }
+  ],
+  "cases": [
+    {
+      "name": "웹훅 누락 주문 하나",
+      "requested": ["ORD-20261105-0007"],
+      "changedOrders": ["ORD-20261105-0007"],
+      "skipped": [],
+      "planHash": "ca2bd2fbef01ba4cb7164f599d86555acac651ba3ed869d62c8635b4e5cbce4a"
+    },
+    {
+      "name": "맞지 않는 주문이 섞여도 같은 계획",
+      "requested": ["ORD-20261105-0007", "ORD-20261105-0005", "ORD-20261105-0004", "ORD-404"],
+      "changedOrders": ["ORD-20261105-0007"],
+      "skipped": ["ORD-20261105-0005", "ORD-20261105-0004", "ORD-404"],
+      "planHash": "ca2bd2fbef01ba4cb7164f599d86555acac651ba3ed869d62c8635b4e5cbce4a"
+    },
+    {
+      "name": "금액 불일치와 이중 승인은 제외",
+      "requested": ["ORD-X-AMOUNT", "ORD-X-DOUBLE"],
+      "changedOrders": [],
+      "skipped": ["ORD-X-AMOUNT", "ORD-X-DOUBLE"],
+      "planHash": "21f7e4572c347cad3a7934fdc14380d10ddd1c538693534ab0e36eca7cc4d20b"
+    }
+  ]
+}

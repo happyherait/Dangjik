@@ -12,6 +12,11 @@
   <description>런북 계획과 승인 규칙. Spring, DB, AI에 의존하지 않는 순수 Java 모듈</description>
   <dependencies>
     <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>

@@ -84,3 +84,4 @@ button:disabled { opacity: .5; cursor: default; }
 .timeline .tag { margin-right: 6px; }
 td.wrap { white-space: normal; }
 input.ver { width: 90px; padding: 6px 8px; border: 1px solid #d0d5dd; border-radius: 6px; font: inherit; }
+.demo-banner { background: #fff3bf; color: #5c3d00; padding: 8px 24px; font-size: 13px; }
