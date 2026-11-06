@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { areas } from './menu'
 import PartnerPicker from './components/PartnerPicker.vue'
+import StaffPicker from './components/StaffPicker.vue'
 
 const route = useRoute()
 const currentArea = computed(() => areas.find((a) => route.path.startsWith(`/${a.key}/`)))
@@ -27,6 +28,7 @@ const currentArea = computed(() => areas.find((a) => route.path.startsWith(`/${a
       <aside v-if="currentArea" class="side" :aria-label="`${currentArea.title} 메뉴`">
         <p class="audience">{{ currentArea.audience }}</p>
         <PartnerPicker v-if="currentArea.key === 'partner'" />
+        <StaffPicker v-if="currentArea.key === 'ops'" />
         <RouterLink v-for="item in currentArea.items" :key="item.path" :to="item.path">
           {{ item.title }}
           <small v-if="item.status === 'planned'" class="soon">준비 중</small>

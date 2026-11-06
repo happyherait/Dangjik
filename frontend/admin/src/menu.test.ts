@@ -43,7 +43,8 @@ describe('화면', () => {
 
   it('아직 만들지 않은 메뉴는 준비 중으로 표시한다', async () => {
     const router = createAppRouter()
-    router.push('/ops/chat')
+    fakeApi({ '/api/partner': { body: [] } })
+    router.push('/partner/notices')
     await router.isReady()
     const wrapper = mount(App, { global: { plugins: [router] } })
     await flushPromises()

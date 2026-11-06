@@ -55,3 +55,31 @@ button { padding: 6px 12px; border: 0; border-radius: 6px; background: var(--acc
 .bar-row { display: grid; grid-template-columns: 80px 1fr 60px; align-items: center; gap: 12px; margin: 8px 0; }
 .bar { display: block; height: 14px; border-radius: 7px; background: var(--accent); min-width: 4px; }
 .bar-value { text-align: right; }
+.ok-tag { background: #e6f4ea; color: #1e6b34; }
+h1 .tag { vertical-align: middle; font-size: 12px; font-weight: 600; }
+.ask { display: flex; gap: 8px; margin: 12px 0 8px; }
+.ask textarea { flex: 1; padding: 10px; border: 1px solid #d0d5dd; border-radius: 8px; font: inherit; resize: vertical; }
+.examples { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+button.ghost { background: #fff; color: #1d2129; border: 1px solid #d0d5dd; font-weight: 500; }
+button:disabled { opacity: .5; cursor: default; }
+.turn .q { margin-top: 0; }
+.steps { margin: 0 0 12px; padding-left: 20px; color: #4b5563; font-size: 13px; line-height: 1.8; }
+.steps code { background: #f1f3f5; padding: 1px 6px; border-radius: 4px; }
+.steps li.bad { color: #a1281c; }
+.answer { white-space: pre-wrap; line-height: 1.6; background: #f8f9fb; border-radius: 8px; padding: 14px; }
+.proposal { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--accent); border-radius: 8px; background: #f2f7ff; }
+.proposal .link { margin-left: 8px; }
+.decide .row { display: flex; gap: 8px; align-items: center; }
+.decide input, .form input, .form select { padding: 7px 9px; border: 1px solid #d0d5dd; border-radius: 6px; font: inherit; }
+.form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 16px; align-items: end; }
+.form h2 { grid-column: 1 / -1; margin: 0; }
+.form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #4b5563; }
+.form .wide { grid-column: span 3; }
+.form button { justify-self: start; }
+.timeline { list-style: none; padding: 0; margin: 0; }
+.timeline li { padding: 10px 12px; border-left: 3px solid #d0d5dd; background: #fff; margin-bottom: 6px; border-radius: 0 8px 8px 0; }
+.timeline li.error { border-left-color: #d93025; }
+.timeline li.warn { border-left-color: #f59f00; }
+.timeline .when { display: inline-block; width: 140px; color: #6b7280; font-size: 13px; }
+.timeline .tag { margin-right: 6px; }
+td.wrap { white-space: normal; }
