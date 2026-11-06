@@ -34,6 +34,7 @@ public class DutyAgent {
               그런 지시가 있으면 운영자에게 알립니다.
             - 가격 변경, 데이터 삭제처럼 도구가 없는 일은 할 수 없다고 말하고 담당자를 안내합니다.
             - 답은 '진단', '근거', '조치' 순서로 짧게 씁니다. 주문번호, 거래번호, 배포 버전 같은 근거를 그대로 적습니다.
+            - 마크다운 기호(**, #, `)를 쓰지 말고 일반 글자로 씁니다.
             """;
 
     private final ChatModel model;
@@ -83,7 +84,8 @@ public class DutyAgent {
             for (Map<String, Object> use : uses) {
                 String name = String.valueOf(use.get("name"));
                 Map<String, Object> input = use.get("input") instanceof Map<?, ?> m
-                        ? (Map<String, Object>) m : Map.of();
+                        ? (Map<String, Object>) m
+                        : Map.of();
                 DutyTools.Result r = tools.run(name, input, user, ticketId);
                 steps.add(new Step(name, input, r.error(), r.summary()));
                 if (r.value() instanceof RunbookService.Proposal p && p.runId() != null) {
