@@ -29,7 +29,7 @@ class SeedDataIT {
 
     @Test
     void 시드_상품이_조회된다() {
-        assertEquals(8, products.findAll().size());
+        assertEquals(10, products.findAll().size());
     }
 
     @Test
@@ -45,7 +45,8 @@ class SeedDataIT {
     void 런북은_DB_사실로_판단해_장애_주문만_대상으로_삼는다() {
         List<String> requested = List.of("ORD-20261105-0007", "ORD-20261105-0005", "ORD-20261105-0004");
 
-        RunbookPlan plan = PaymentResyncRunbook.plan(requested, facts.orders(requested), facts.pgTransactions(requested));
+        RunbookPlan plan = PaymentResyncRunbook.plan(requested, facts.orders(requested),
+                facts.pgTransactions(requested));
 
         assertEquals(List.of(new Change("ORD-20261105-0007", "PAYMENT_PENDING", "PAID", "PGTX-88007", 39000)),
                 plan.changes());
