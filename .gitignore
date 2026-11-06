@@ -1,0 +1,29 @@
+# OS, 에디터
+.DS_Store
+Thumbs.db
+.idea/
+
+# 비밀 값
+.env
+.env.*
+!.env.example
+
+# Java
+target/
+*.class
+
+# Node, Nuxt, Vite
+node_modules/
+dist/
+.nuxt/
+.output/
+
+# Android
+.gradle/
+build/
+local.properties
+
+# iOS
+DerivedData/
+*.xcuserstate
+xcuserdata/
