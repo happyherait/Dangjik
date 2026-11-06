@@ -90,7 +90,8 @@ public class RunbookService {
         if (plan.isEmpty()) {
             return new Proposal(plan, null, false);
         }
-        String key = runbookId + ":" + plan.planHash();
+        // 계획 해시에 런북 아이디가 들어 있으므로 해시만으로 같은 계획을 구별할 수 있다
+        String key = plan.planHash();
         Optional<String> existing = jdbc.sql("SELECT run_id FROM runbook_runs WHERE idempotency_key = :k")
                 .param("k", key).query(String.class).optional();
         if (existing.isPresent()) {
