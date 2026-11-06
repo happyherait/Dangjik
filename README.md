@@ -9,6 +9,7 @@ AI는 장애 원인을 진단하고 조치안을 제안하며, 조치 실행은 
 
 **소개와 Q&A**: https://happyherait.github.io/Dangjik/  
 **공개 데모** (서버 없이 브라우저에서 동작): https://happyherait.github.io/Dangjik/demo/
+**데모 영상** (2분 22초): https://youtu.be/XXQylW9ss6Y
 
 ## 핵심 원칙
 
