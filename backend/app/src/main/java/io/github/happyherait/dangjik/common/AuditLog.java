@@ -1,5 +1,6 @@
 package io.github.happyherait.dangjik.common;
 
+import java.sql.Types;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class AuditLog {
                 .param("actor", actorId)
                 .param("action", action)
                 .param("target", target)
-                .param("detail", detail)
+                .param("detail", detail, Types.VARCHAR)
                 .update();
     }
 }
