@@ -7,6 +7,9 @@ AI는 장애 원인을 진단하고 조치안을 제안하며, 조치 실행은 
 - Spring Boot, Oracle
 - 회사, 사용자, 상품, 주문 데이터는 모두 가상입니다. (가상 회사: 하루마켓)
 
+**소개와 Q&A**: https://happyherait.github.io/Dangjik/  
+**공개 데모** (서버 없이 브라우저에서 동작): https://happyherait.github.io/Dangjik/demo/
+
 ## 핵심 원칙
 
 - AI 도구는 읽기 전용 조회와 런북 제안만 할 수 있습니다. 임의 SQL이나 임의 API를 실행하지 않습니다.
@@ -48,6 +51,9 @@ frontend/
 mobile/
   android/   Kotlin WebView 셸 (AGP 9.4, Gradle 9.6)
   ios/       Swift WKWebView 셸 (XcodeGen)
+shared/
+  golden/    Java와 TypeScript가 함께 쓰는 런북 골든 케이스
+site/        소개와 Q&A 페이지 (GitHub Pages)
 docs/        기여 방법, 설계 기록
 ```
 

@@ -7,6 +7,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+!.env.demo
 
 # Java
 target/
@@ -30,3 +31,4 @@ xcuserdata/
 # XcodeGen이 만드는 프로젝트
 mobile/ios/*.xcodeproj/
 mobile/ios/DangjikApp/Info.plist
+frontend/admin/dist-demo/
