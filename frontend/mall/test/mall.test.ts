@@ -7,6 +7,7 @@ import {
   ORDER_ID_PATTERN,
   orderStatusLabel,
   type Product,
+  shipmentStatusLabel,
 } from '../app/utils/mall'
 
 const product = (over: Partial<Product>): Product => ({
@@ -29,6 +30,12 @@ describe('몰 화면 규칙', () => {
   it('결제대기는 고객에게 결제 확인 중으로 보인다', () => {
     expect(orderStatusLabel('PAYMENT_PENDING')).toBe('결제 확인 중')
     expect(orderStatusLabel('UNKNOWN')).toBe('UNKNOWN')
+  })
+
+  it('배송 상태는 한글로 보인다', () => {
+    expect(shipmentStatusLabel('WAITING_PAYMENT')).toBe('결제 대기')
+    expect(shipmentStatusLabel('DELIVERED')).toBe('배송 완료')
+    expect(shipmentStatusLabel('UNKNOWN')).toBe('UNKNOWN')
   })
 
   it('품절 상태이거나 재고가 0이면 품절', () => {
