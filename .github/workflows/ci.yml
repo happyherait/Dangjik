@@ -34,7 +34,17 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: maven
-      - run: mvn -B -f backend/pom.xml verify
+      - run: mvn -B -f backend/pom.xml verify | tee mvn.log; exit ${PIPESTATUS[0]}
+        shell: bash
+      - name: Report failures as annotations
+        if: failure()
+        shell: bash
+        run: |
+          grep -E "^\[ERROR\]" mvn.log | head -40 | while IFS= read -r line; do echo "::error title=maven::${line}"; done
+          for f in $(grep -l -E "FAILURE|ERROR" backend/*/target/*-reports/*.txt 2>/dev/null); do
+            body=$(head -c 3000 "$f" | sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g')
+            echo "::error title=$(basename "$f")::${body}"
+          done
 
   admin:
     runs-on: ubuntu-latest
