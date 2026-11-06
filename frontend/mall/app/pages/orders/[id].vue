@@ -30,7 +30,7 @@ useHead({ title: `주문 ${id} · 하루마켓` })
             <td><NuxtLink :to="`/products/${item.productId}`">{{ item.productName }}</NuxtLink></td>
             <td>{{ item.qty }}</td>
             <td>{{ formatPrice(item.unitPrice * item.qty) }}</td>
-            <td>{{ item.shipmentStatus }}</td>
+            <td>{{ shipmentStatusLabel(item.shipmentStatus) }}</td>
           </tr>
         </tbody>
       </table>

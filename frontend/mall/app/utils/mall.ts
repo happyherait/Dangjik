@@ -46,6 +46,17 @@ export function orderStatusLabel(status: string): string {
   return ORDER_STATUS[status] ?? status
 }
 
+const SHIPMENT_STATUS: Record<string, string> = {
+  WAITING_PAYMENT: '결제 대기',
+  READY: '출고 준비',
+  SHIPPING: '배송 중',
+  DELIVERED: '배송 완료',
+}
+
+export function shipmentStatusLabel(status: string): string {
+  return SHIPMENT_STATUS[status] ?? status
+}
+
 export function isSoldOut(product: Pick<Product, 'status' | 'stock'>): boolean {
   return product.status === 'SOLD_OUT' || product.stock <= 0
 }
