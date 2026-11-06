@@ -10,3 +10,10 @@ spring:
     password: ${DANGJIK_DB_PASSWORD:dangjik}
   flyway:
     locations: classpath:db/migration
+
+dangjik:
+  anthropic:
+    # 키가 없으면 정해진 순서로 조회하고 제안하는 데모 모델로 동작한다
+    api-key: ${ANTHROPIC_API_KEY:}
+    model: ${ANTHROPIC_MODEL:claude-sonnet-5-5}
+    base-url: ${ANTHROPIC_BASE_URL:https://api.anthropic.com}
