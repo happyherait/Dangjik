@@ -26,6 +26,7 @@ backend/
   runbook/   런북 계획과 승인 규칙 (순수 Java, Spring/DB/AI 의존성 없음)
   app/       Spring Boot API, Flyway, Oracle
 frontend/
+  mall/      Nuxt: 고객용 몰 (홈, 상품, 주문 조회)
   admin/     Vue: 파트너 포털, CRM, 운영 콘솔
 docs/        기여 방법, 설계 기록
 ```

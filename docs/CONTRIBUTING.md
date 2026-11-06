@@ -17,12 +17,14 @@
 |---|---|---|
 | Oracle | `docker compose up -d --wait` | 1524 |
 | API | `mvn -f backend/pom.xml -DskipTests package` 후 `java -jar backend/app/target/dangjik-app-0.1.0.jar` | 18082 |
+| 몰 화면 | `frontend/mall`에서 `npm ci`, `npm run dev` (API를 먼저 실행) | 3005 |
 | 관리자 화면 | `frontend/admin`에서 `npm ci`, `npm run dev` | 5175 |
 
 ## 테스트
 
 - 런북 규칙: `mvn -f backend/pom.xml -pl runbook test` (DB 필요 없음)
 - 백엔드 전체: `mvn -f backend/pom.xml verify` (Oracle 필요)
+- 몰 화면: `frontend/mall`에서 `npm run typecheck`, `npm test`
 - 관리자 화면: `frontend/admin`에서 `npm run typecheck`, `npm test`
 
 ## 데이터 규칙
