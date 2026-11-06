@@ -40,6 +40,22 @@ const LABELS: Record<string, string> = {
   // 문의
   OPEN: '처리중',
   CLOSED: '완료',
+  ESCALATED: 'SR 등록',
+  FIXED: '해결',
+  // 런북
+  WAITING_APPROVAL: '승인 대기',
+  EXECUTED: '실행됨',
+  REJECTED: '반려',
+  FAILED: '실패',
+  SUCCESS: '성공',
+  WARNING: '경고',
+  // SR
+  MALL: '몰',
+  PARTNER: '파트너',
+  CRM: 'CRM',
+  HIGH: '높음',
+  MEDIUM: '보통',
+  LOW: '낮음',
   // 공통
   ACTIVE: '사용중',
   WEB: '웹',

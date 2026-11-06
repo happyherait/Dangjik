@@ -14,6 +14,15 @@ import CrmMemberDetail from './pages/crm/CrmMemberDetail.vue'
 import CrmInquiries from './pages/crm/CrmInquiries.vue'
 import CrmCoupons from './pages/crm/CrmCoupons.vue'
 import CrmSegments from './pages/crm/CrmSegments.vue'
+import OpsChat from './pages/ops/OpsChat.vue'
+import OpsTickets from './pages/ops/OpsTickets.vue'
+import OpsIncidents from './pages/ops/OpsIncidents.vue'
+import OpsRunbooks from './pages/ops/OpsRunbooks.vue'
+import OpsRunbookDetail from './pages/ops/OpsRunbookDetail.vue'
+import OpsBatches from './pages/ops/OpsBatches.vue'
+import OpsDeployments from './pages/ops/OpsDeployments.vue'
+import OpsAppVersions from './pages/ops/OpsAppVersions.vue'
+import OpsAudit from './pages/ops/OpsAudit.vue'
 
 /** 구현된 메뉴의 화면. 여기에 없는 메뉴는 '준비 중' 화면을 보여준다. */
 export const pages: Record<string, Component> = {
@@ -27,6 +36,14 @@ export const pages: Record<string, Component> = {
   '/crm/inquiries': CrmInquiries,
   '/crm/coupons': CrmCoupons,
   '/crm/segments': CrmSegments,
+  '/ops/chat': OpsChat,
+  '/ops/tickets': OpsTickets,
+  '/ops/incidents': OpsIncidents,
+  '/ops/runbooks': OpsRunbooks,
+  '/ops/batches': OpsBatches,
+  '/ops/deployments': OpsDeployments,
+  '/ops/app-versions': OpsAppVersions,
+  '/ops/audit': OpsAudit,
 }
 
 export const routes: RouteRecordRaw[] = [
@@ -39,6 +56,7 @@ export const routes: RouteRecordRaw[] = [
     })),
   ),
   { path: '/crm/members/:memberId', component: CrmMemberDetail, meta: { area: 'crm', title: '회원 상세' } },
+  { path: '/ops/runbooks/:runId', component: OpsRunbookDetail, meta: { area: 'ops', title: '런북 상세' } },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
