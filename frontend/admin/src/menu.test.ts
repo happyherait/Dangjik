@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { areas, findMenuItem } from './menu'
 import { createAppRouter, routes } from './router'
 import App from './App.vue'
+import { fakeApi } from './testing'
 
 describe('메뉴 구성', () => {
   it('파트너 포털, CRM, 운영 콘솔 세 영역이 있다', () => {
@@ -25,7 +26,10 @@ describe('메뉴 구성', () => {
 })
 
 describe('화면', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
   it('영역을 열면 그 영역의 사이드 메뉴가 보인다', async () => {
+    fakeApi({ '/api/crm/members': { body: [] } })
     const router = createAppRouter()
     router.push('/crm/members')
     await router.isReady()
@@ -35,6 +39,17 @@ describe('화면', () => {
     expect(wrapper.find('aside').attributes('aria-label')).toBe('CRM 메뉴')
     expect(wrapper.find('aside').text()).toContain('쿠폰/프로모션')
     expect(wrapper.find('h1').text()).toBe('회원 360')
+  })
+
+  it('아직 만들지 않은 메뉴는 준비 중으로 표시한다', async () => {
+    const router = createAppRouter()
+    router.push('/ops/chat')
+    await router.isReady()
+    const wrapper = mount(App, { global: { plugins: [router] } })
+    await flushPromises()
+
+    expect(wrapper.find('aside').text()).toContain('준비 중')
+    expect(wrapper.find('.planned').exists()).toBe(true)
   })
 })
 
