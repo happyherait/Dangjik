@@ -33,6 +33,12 @@ class SeedDataIT {
     }
 
     @Test
+    void 상품_하나를_번호로_조회한다() {
+        assertEquals("세라믹 머그 2P", products.findById("PRD-0006").orElseThrow().name());
+        assertTrue(products.findById("PRD-9999").isEmpty());
+    }
+
+    @Test
     void 장애_주문은_결제대기로_남아_있다() {
         OrderRepository.Order order = orders.findById("ORD-20261105-0007").orElseThrow();
 

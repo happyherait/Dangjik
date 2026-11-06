@@ -1,6 +1,7 @@
 package io.github.happyherait.dangjik.mall;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +26,16 @@ public class ProductRepository {
                 """)
                 .query(Product.class)
                 .list();
+    }
+
+    public Optional<Product> findById(String productId) {
+        return jdbc.sql("""
+                SELECT product_id, partner_id, name, category, price, stock, description, status
+                  FROM products
+                 WHERE product_id = :productId
+                """)
+                .param("productId", productId)
+                .query(Product.class)
+                .optional();
     }
 }

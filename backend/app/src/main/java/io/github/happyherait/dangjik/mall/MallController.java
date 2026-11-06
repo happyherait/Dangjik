@@ -24,6 +24,11 @@ public class MallController {
         return products.findAll();
     }
 
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<ProductRepository.Product> product(@PathVariable String productId) {
+        return ResponseEntity.of(products.findById(productId));
+    }
+
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<OrderRepository.Order> order(@PathVariable String orderId) {
         return ResponseEntity.of(orders.findById(orderId));

@@ -1,0 +1,43 @@
+:root {
+  font-family: 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
+  color: #1f2328;
+  background: #fffdf8;
+  --brand: #e8590c;
+  --line: #ece6dc;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.header { border-bottom: 1px solid var(--line); background: #fff; }
+.header .wrap { display: flex; align-items: center; gap: 28px; height: 64px; }
+.logo { font-size: 22px; font-weight: 800; color: var(--brand); }
+.nav { display: flex; gap: 18px; }
+.nav a.router-link-active { color: var(--brand); font-weight: 700; }
+main.wrap { padding-top: 28px; padding-bottom: 60px; }
+.hero { padding: 36px 28px; border-radius: 16px; background: #fff1e6; margin-bottom: 32px; }
+.hero h1 { margin: 0 0 8px; font-size: 28px; }
+.hero p { margin: 0; color: #5c5f66; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+.card { display: block; border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 16px; }
+.card:hover { border-color: var(--brand); }
+.thumb { height: 120px; border-radius: 8px; background: #f6efe6; display: grid; place-items: center; font-size: 40px; margin-bottom: 12px; }
+.cat { font-size: 12px; color: #868e96; }
+.name { margin: 4px 0; font-weight: 600; }
+.price { font-weight: 800; }
+.soldout { color: #adb5bd; }
+.badge { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: #f1f3f5; }
+.badge.warn { background: #fff3bf; color: #8a5a00; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.chips a { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
+.chips a.on { background: var(--brand); color: #fff; border-color: var(--brand); }
+.detail { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.detail .thumb { height: 320px; font-size: 96px; }
+.box { border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 20px; }
+.notice { padding: 14px 16px; border-radius: 10px; background: #fff3bf; margin: 16px 0; line-height: 1.5; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+form.lookup { display: flex; gap: 8px; max-width: 480px; }
+input { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; }
+button { padding: 10px 18px; border: 0; border-radius: 8px; background: var(--brand); color: #fff; font-weight: 700; cursor: pointer; }
+.muted { color: #868e96; }
