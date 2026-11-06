@@ -42,3 +42,6 @@ input { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radiu
 button { padding: 10px 18px; border: 0; border-radius: 8px; background: var(--brand); color: #fff; font-weight: 700; cursor: pointer; }
 .muted { color: #868e96; }
 .app-badge { margin-left: auto; background: #fff1e6; color: #e8590c; }
+/* 폰 화면에서 헤더 글자가 두 줄로 꺾이지 않게 */
+.logo, .nav a, .app-badge { white-space: nowrap; }
+.header .wrap { gap: 16px; }
