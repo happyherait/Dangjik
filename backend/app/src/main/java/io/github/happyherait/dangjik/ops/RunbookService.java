@@ -1,6 +1,7 @@
 package io.github.happyherait.dangjik.ops;
 
 import io.github.happyherait.dangjik.common.ApiError;
+import io.github.happyherait.dangjik.common.AppClock;
 import io.github.happyherait.dangjik.common.AuditLog;
 import io.github.happyherait.dangjik.runbook.ApprovalDecision;
 import io.github.happyherait.dangjik.runbook.ApprovalRules;
@@ -53,14 +54,16 @@ public class RunbookService {
     private final OpsFactsRepository ops;
     private final AuditLog audit;
     private final ObjectMapper json;
+    private final AppClock clock;
 
     public RunbookService(JdbcClient jdbc, PaymentFactsRepository facts, OpsFactsRepository ops, AuditLog audit,
-                          ObjectMapper json) {
+                          ObjectMapper json, AppClock clock) {
         this.jdbc = jdbc;
         this.facts = facts;
         this.ops = ops;
         this.audit = audit;
         this.json = json;
+        this.clock = clock;
     }
 
     /** 현재 사실로 계획을 계산한다. DB는 바꾸지 않는다. */
@@ -101,12 +104,13 @@ public class RunbookService {
         jdbc.sql("""
                 INSERT INTO runbook_runs (run_id, runbook_id, ticket_id, requested_by, plan_hash, plan_json, status,
                                           idempotency_key, created_at)
-                VALUES (:id, :rb, :ticket, :by, :hash, :plan, 'WAITING_APPROVAL', :key, SYSTIMESTAMP)
+                VALUES (:id, :rb, :ticket, :by, :hash, :plan, 'WAITING_APPROVAL', :key, :now)
                 """)
                 .param("id", runId).param("rb", runbookId).param("ticket", ticketId, Types.VARCHAR).param("by", requestedBy)
                 .param("hash", plan.planHash())
                 .param("plan", json.writeValueAsString(new StoredPlan(ids, reason, plan.changes(), plan.skipped())))
                 .param("key", key)
+                .param("now", clock.now())
                 .update();
         audit.record(requestedBy, "RUNBOOK_PROPOSED", runId,
                 runbookId + " 대상 " + plan.changes().size() + "건. 사유: " + reason);
@@ -116,6 +120,11 @@ public class RunbookService {
     public List<RunView> runs() {
         return jdbc.sql(RUN_SELECT + " ORDER BY created_at DESC").query(RunRow.class).list()
                 .stream().map(this::view).toList();
+    }
+
+    /** 이 주문을 대상으로 제안된 런북 */
+    public List<RunView> runsFor(String orderId) {
+        return runs().stream().filter(r -> r.proposal().requestedOrderIds().contains(orderId)).toList();
     }
 
     public Optional<RunView> run(String runId) {
@@ -148,10 +157,11 @@ public class RunbookService {
             }
             jdbc.sql("""
                     INSERT INTO payments (payment_id, order_id, pg_tx_id, amount, paid_at)
-                    VALUES (:id, :o, :tx, :amount, SYSTIMESTAMP)
+                    VALUES (:id, :o, :tx, :amount, :now)
                     """)
                     .param("id", "PAY-R-" + c.pgTxId()).param("o", c.orderId()).param("tx", c.pgTxId())
                     .param("amount", c.amount())
+                    .param("now", clock.now())
                     .update();
             jdbc.sql("""
                     UPDATE order_items SET shipment_status = 'READY'
@@ -163,10 +173,10 @@ public class RunbookService {
 
         jdbc.sql("""
                 INSERT INTO approvals (run_id, approver_id, decision, plan_hash, decided_at)
-                VALUES (:r, :a, 'APPROVE', :h, SYSTIMESTAMP)
-                """).param("r", runId).param("a", approverId).param("h", approvedHash).update();
-        jdbc.sql("UPDATE runbook_runs SET status = 'EXECUTED', executed_at = SYSTIMESTAMP WHERE run_id = :r")
-                .param("r", runId).update();
+                VALUES (:r, :a, 'APPROVE', :h, :now)
+                """).param("now", clock.now()).param("r", runId).param("a", approverId).param("h", approvedHash).update();
+        jdbc.sql("UPDATE runbook_runs SET status = 'EXECUTED', executed_at = :now WHERE run_id = :r")
+                .param("now", clock.now()).param("r", runId).update();
         if (row.ticketId() != null) {
             jdbc.sql("UPDATE sr_tickets SET status = 'FIXED' WHERE ticket_id = :t").param("t", row.ticketId()).update();
         }
@@ -182,8 +192,8 @@ public class RunbookService {
         }
         jdbc.sql("""
                 INSERT INTO approvals (run_id, approver_id, decision, plan_hash, reason, decided_at)
-                VALUES (:r, :a, 'REJECT', :h, :reason, SYSTIMESTAMP)
-                """).param("r", runId).param("a", approverId).param("h", row.planHash()).param("reason", reason, Types.VARCHAR)
+                VALUES (:r, :a, 'REJECT', :h, :reason, :now)
+                """).param("now", clock.now()).param("r", runId).param("a", approverId).param("h", row.planHash()).param("reason", reason, Types.VARCHAR)
                 .update();
         jdbc.sql("UPDATE runbook_runs SET status = 'REJECTED' WHERE run_id = :r").param("r", runId).update();
         audit.record(approverId, "RUNBOOK_REJECTED", runId, reason);

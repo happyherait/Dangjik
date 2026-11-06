@@ -1,6 +1,7 @@
 package io.github.happyherait.dangjik.ops;
 
 import io.github.happyherait.dangjik.common.ApiError;
+import io.github.happyherait.dangjik.common.AppClock;
 import io.github.happyherait.dangjik.common.AuditLog;
 import java.sql.Types;
 import java.time.LocalDateTime;
@@ -30,11 +31,13 @@ public class TicketRepository {
     private final JdbcClient jdbc;
     private final OpsFactsRepository ops;
     private final AuditLog audit;
+    private final AppClock clock;
 
-    public TicketRepository(JdbcClient jdbc, OpsFactsRepository ops, AuditLog audit) {
+    public TicketRepository(JdbcClient jdbc, OpsFactsRepository ops, AuditLog audit, AppClock clock) {
         this.jdbc = jdbc;
         this.ops = ops;
         this.audit = audit;
+        this.clock = clock;
     }
 
     public List<Ticket> list() {
@@ -69,11 +72,11 @@ public class TicketRepository {
         jdbc.sql("""
                 INSERT INTO sr_tickets (ticket_id, area, severity, title, description, status, inquiry_id, created_by,
                                         created_at)
-                VALUES (:id, :area, :sev, :title, :descr, 'OPEN', :inq, :by, SYSTIMESTAMP)
+                VALUES (:id, :area, :sev, :title, :descr, 'OPEN', :inq, :by, :now)
                 """)
                 .param("id", id).param("area", t.area()).param("sev", t.severity()).param("title", t.title())
                 .param("descr", t.description(), Types.VARCHAR).param("inq", t.inquiryId(), Types.VARCHAR)
-                .param("by", t.createdBy())
+                .param("by", t.createdBy()).param("now", clock.now())
                 .update();
         if (t.inquiryId() != null) {
             jdbc.sql("UPDATE cs_inquiries SET status = 'ESCALATED' WHERE inquiry_id = :q")

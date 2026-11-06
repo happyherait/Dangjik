@@ -55,6 +55,10 @@ public class OpsFactsRepository {
                              LocalDateTime updatedAt) {
     }
 
+    public record Approval(String runId, String approverId, String decision, String reason,
+                           LocalDateTime decidedAt) {
+    }
+
     public record AuditEvent(long eventId, String actorId, String action, String target, String detail,
                              LocalDateTime createdAt) {
     }
@@ -155,6 +159,23 @@ public class OpsFactsRepository {
                 SELECT event_id, actor_id, action, target, detail, created_at
                   FROM audit_events ORDER BY event_id DESC FETCH FIRST 200 ROWS ONLY
                 """).query(AuditEvent.class).list();
+    }
+
+    /** 이 주문을 대상으로 남은 감사 로그 (주문 단위와 주문 상품 단위) */
+    public List<AuditEvent> auditFor(String orderId) {
+        return jdbc.sql("""
+                SELECT event_id, actor_id, action, target, detail, created_at
+                  FROM audit_events
+                 WHERE target = :o OR target LIKE :prefix
+                 ORDER BY event_id
+                """).param("o", orderId).param("prefix", orderId + "#%").query(AuditEvent.class).list();
+    }
+
+    public List<Approval> approvals(String runId) {
+        return jdbc.sql("""
+                SELECT run_id, approver_id, decision, reason, decided_at
+                  FROM approvals WHERE run_id = :r ORDER BY approval_id
+                """).param("r", runId).query(Approval.class).list();
     }
 
     public Optional<String> staffRole(String userId) {
